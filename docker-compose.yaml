@@ -50,6 +50,7 @@ services:
       SERVICE_NAME: mysql
     volumes:
       - ./mysql/my.cnf:/etc/mysql/my.cnf
+      #test
     networks:
       - app-network
 
