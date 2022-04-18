@@ -2165,7 +2165,7 @@ module.exports = {
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 $(document).ready(function () {
-  console.log("this is javascript test, edited, again");
+  console.log("this is an edit test");
 });
 
 /***/ }),
