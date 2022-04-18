@@ -2165,6 +2165,9 @@ module.exports = {
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 $(document).ready(function () {
+  $("submitting").on("click", function () {
+    console.log("You clicked submit.");
+  });
   console.log("this is an edit test");
 });
 
