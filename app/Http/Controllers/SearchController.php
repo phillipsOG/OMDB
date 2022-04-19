@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Routing\Controller as BaseController;
 use GuzzleHttp\Client;
 
@@ -19,7 +20,7 @@ class SearchController extends BaseController
         $apiKey = "&apikey=fe080be1";
         $usrSearch = $_POST['movieName'];
         $finalUrl = $url.$usrSearch.$apiKey;
-        $data = array('key1' => 'value1', 'key2' => 'value2');
+        $data = ['key1' => 'value1', 'key2' => 'value2'];
         $options = array(
             'http' => array(
                 'header' => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -34,10 +35,16 @@ class SearchController extends BaseController
 
         //Guzzle
         $client = new Client();
+        try
+        {
+            $res = $client->request('GET', $finalUrl, []);
+            $statusCode = $res->getStatusCode();
+            $resBody = $res->getBody();
+            return response()->json(['result' => "$statusCode.$resBody"]);
+        }
+        catch (GuzzleException $e)
+        {
 
-        $res = $client->request('GET', $finalUrl, [
-
-        ]);
-        echo $res>getStatusCode();
+        }
     }
 }

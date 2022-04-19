@@ -13,7 +13,8 @@
                 <i class="fa-trash"></i>Search
             </button>
             <br>
-            <p id="test">Text</p>
+            <p id="test">Movie Title</p>
+            <p id="test2">res.body</p>
         </form>
     </body>
 </div>

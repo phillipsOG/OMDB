@@ -1,7 +1,6 @@
 require('./bootstrap');
 
 $(document).ready(function(){
-    // api key
     $("#submit").on("click", function(ev) {
         let usrInput = $("#movie_title").val();
         $("#test").text(usrInput);
@@ -21,7 +20,8 @@ function getTitle(movie_title)
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         data: {"movieName": movie_title},
         success: function (response) {
-            console.log(response);
+            $("#test2").text(JSON.stringify(response, null, 2));
+            //console.log(JSON.stringify(response, null, '\t'));
         }
     });
 }

@@ -2165,7 +2165,6 @@ module.exports = {
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 $(document).ready(function () {
-  // api key
   $("#submit").on("click", function (ev) {
     var usrInput = $("#movie_title").val();
     $("#test").text(usrInput);
@@ -2188,7 +2187,7 @@ function getTitle(movie_title) {
       "movieName": movie_title
     },
     success: function success(response) {
-      console.log(response);
+      $("#test2").text(JSON.stringify(response, null, 2)); //console.log(JSON.stringify(response, null, '\t'));
     }
   });
 }
