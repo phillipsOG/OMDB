@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller as BaseController;
+use App\Http\Controllers\SearchController;
 
 class HomeController extends BaseController
 {
