@@ -5,46 +5,115 @@ namespace App\Http\Controllers;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Routing\Controller as BaseController;
 use GuzzleHttp\Client;
+use Illuminate\View\View;
+use phpDocumentor\Reflection\Types\Integer;
 
 class SearchController extends BaseController
 {
+    private Client $client;
+    private string $apiKey;
+    private string $baseUrl = "https://www.omdbapi.com/?s=";
+    private string $baseUrlDesc = "https://www.omdbapi.com/?t=";
+
     public function __construct()
     {
+        $this->client = new Client();
+        // TODO: Get this from the ENV file
+        $this->apiKey = 'fe080be1';
     }
 
-    function movieSearch(): string
+    /**
+     * @param string $userSearchTerm
+     * @return string
+     */
+    private function buildApiUrl(string $userSearchTerm): string
     {
-        //http://www.omdbapi.com/?apikey=[fe080be1]&
-        //OLD http://www.omdbapi.com/?i=tt3896198&apikey=fe080be1
-        $url = "http://www.omdbapi.com/?s=";
-        $apiKey = "&apikey=fe080be1";
-        $usrSearch = $_POST['movieName'];
-        $finalUrl = $url.$usrSearch.$apiKey;
-        $data = ['key1' => 'value1', 'key2' => 'value2'];
-        $options = array(
-            'http' => array(
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' => 'POST',
-                'content' => http_build_query($data)
-            )
-        );
-        $context = stream_context_create($options);
-        $result = file_get_contents($finalUrl, false, $context);
-        //var_dump($result);
-        //return response()->json(['result' => "test response"]);
+        $apiKey = "&apikey=$this->apiKey";
+        return $this->baseUrl . $userSearchTerm . $apiKey;
+    }
 
-        //Guzzle
-        $client = new Client();
-        try
-        {
-            $res = $client->request('GET', $finalUrl, []);
-            $statusCode = $res->getStatusCode();
-            $resBody = $res->getBody();
-            return response()->json(['result' => "$statusCode.$resBody"]);
+    /**
+     * @param string $userSearchTerm
+     * @param string $movieYear
+     * @return string
+     */
+    private function buildApiUrlDesc(string $userSearchTerm, string $movieYear): string
+    {
+        $apiKey = "&apikey=$this->apiKey";
+        $movieYearUrl = "&y=".$movieYear;
+        return $this->baseUrlDesc . $userSearchTerm . $movieYearUrl . $apiKey;
+    }
+
+    /**
+     * @return void
+     */
+    function movieSearch(): void
+    {
+        // TODO: Check isset
+        $usrSearch = $_GET['movie_title'];
+
+        $finalUrl = $this->buildApiUrl($usrSearch);
+
+        try {
+            $res = $this->client->request('GET', $finalUrl, []);
+
+            $resBody = $res->getBody()->getContents();
+
+            $parsed = json_decode($resBody, true);
+
+            $searchView = view('searchResults', ['movieSearchResults' => $parsed['Search']]);
+            $renderedView = $searchView->render();
+
+            $results = [
+                "results" => $renderedView
+            ];
+
+            response()->json($results)->send();
+        } catch (GuzzleException $e) {
+            dd($e->getMessage());
         }
-        catch (GuzzleException $e)
-        {
+    }
 
+    /**
+     * @return View
+     */
+    function searchResults(): View
+    {
+        // TODO: Check isset
+        $usrSearch = $_GET['movie_title'];
+
+        $finalUrl = $this->buildApiUrl($usrSearch);
+
+        try {
+            $res = $this->client->request('GET', $finalUrl, []);
+            $resBody = $res->getBody()->getContents();
+
+            $parsed = json_decode($resBody, true);
+        } catch (GuzzleException $e) {
+            dd($e->getMessage());
+        }
+        return view('layouts/searchResults', ['searchResults' => $parsed['Search']]);
+    }
+
+    /**
+     * @return array
+     */
+    function movieSearchDesc(): array
+    {
+        $movie_title = $_GET['movieName'];
+        $movie_year = $_GET['movieYear'];
+        $finalUrl = $this->buildApiUrlDesc($movie_title, $movie_year);
+        //echo $finalUrl;
+        try {
+            $res = $this->client->request('GET', $finalUrl, []);
+            $resBody = $res->getBody()->getContents();
+            $parsed = json_decode($resBody, true);
+            $desc = [
+                "desc" => $parsed
+            ];
+            return $desc;
+        } catch (GuzzleException $e) {
+            dd($e->getMessage());
         }
     }
 }
