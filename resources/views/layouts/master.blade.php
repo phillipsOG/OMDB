@@ -13,8 +13,10 @@
             @include('layouts.sidebar')
         @show
     </div>
-    <div class="description">
-        @yield('description')
+    <div class="description" id="movieDesc">
+        @section('description')
+            @include('layouts.description')
+        @show
     </div>
     <div class="wrapper">
         @yield('homepage')

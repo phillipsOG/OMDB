@@ -81,11 +81,17 @@ class SearchController extends BaseController
             $desc = [
                 "Desc" => $parsed
             ];
-            //response()->json($desc)->send();
+
            //return $desc;
         } catch (GuzzleException $e) {
             dd($e->getMessage());
         }
-        return view('layouts/description', ['movieDesc' => $parsed['Desc']]);
+        //var_dump($parsed);
+        $descriptionView = view('layouts/description', ['movieDesc' => $parsed]);
+        $renderedDescView = $descriptionView->render();
+        $results = [
+            "results" => $renderedDescView
+        ];
+        response()->json($parsed)->send();
     }
 }

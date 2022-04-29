@@ -34,7 +34,9 @@ function getTitleDesc(movie_title, movie_year)
        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
        data: {"movieName": movie_title, "movieYear": movie_year},
        success: function(response) {
-           //alert(response['Desc']['Plot']);
+           console.log(response);
+           //let movieResults = response['Plot'];
+           $('#movieDesc').html(response['Plot']);
        }
     });
 }

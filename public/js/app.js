@@ -2204,7 +2204,10 @@ function getTitleDesc(movie_title, movie_year) {
       "movieName": movie_title,
       "movieYear": movie_year
     },
-    success: function success(response) {//alert(response['Desc']['Plot']);
+    success: function success(response) {
+      console.log(response); //let movieResults = response['Plot'];
+
+      $('#movieDesc').html(response['Plot']);
     }
   });
 }

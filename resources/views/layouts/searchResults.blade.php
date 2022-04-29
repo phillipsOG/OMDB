@@ -3,7 +3,6 @@
  * @var array $searchResults
  */
 ?>
-
 @extends('layouts.master')
 @section('title', $_GET['movie_title'])
 @section('returnedContent')
