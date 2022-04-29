@@ -13,6 +13,9 @@
             @include('layouts.sidebar')
         @show
     </div>
+    <div class="description">
+        @yield('description')
+    </div>
     <div class="wrapper">
         @yield('homepage')
         @yield('returnedContent')

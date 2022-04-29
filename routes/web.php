@@ -17,6 +17,5 @@ use App\Http\Controllers\SearchController;
 */
 
 Route::get('/', [HomeController::class, 'index']);
-Route::get('/movieSearch', [SearchController::class, 'movieSearch']);
-Route::get('/movieSearchDesc', [SearchController::class, 'movieSearchDesc']);
 Route::get('/searchResults', [SearchController::class, 'searchResults']);
+Route::get('/movieSearchDesc', [SearchController::class, 'movieSearchDesc']);

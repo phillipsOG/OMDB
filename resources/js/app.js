@@ -20,13 +20,13 @@ $(document).ready(function() {
                 const title = images[i].querySelectorAll('p')[0].innerText;
                 const year = images[i].querySelectorAll('p')[1].innerText;
                 //alert("Image Index: " + i + ", Movie Title: " + title + ", Movie Year: " + year);
-                getTitleDesc(title, year, i);
+                getTitleDesc(title, year);
             }
         }
     });
 })
 
-function getTitleDesc(movie_title, movie_year, index)
+function getTitleDesc(movie_title, movie_year)
 {
     $.ajax({
        type: "GET",
@@ -34,10 +34,7 @@ function getTitleDesc(movie_title, movie_year, index)
        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
        data: {"movieName": movie_title, "movieYear": movie_year},
        success: function(response) {
-           //alert(response['desc']['Plot']);
-           let images = document.getElementsByClassName('imageContainer');
-           images[index].querySelector('desc').innerText = "\n"+response['desc']['Plot'];
-
+           //alert(response['Desc']['Plot']);
        }
     });
 }

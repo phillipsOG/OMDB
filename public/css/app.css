@@ -6,29 +6,35 @@ h3 {
     font-size: 12px;
 }
 
-.image {
+li {
+    list-style-type: none;
+}
+
+.imageContainer {
+    border: 1px solid;
+    padding: 10px;
+    float: left;
+}
+
+.imageContainer .image {
     opacity: 1;
-    display: block;
-    width: 100%;
-    height: auto;
+    width: 200px;
+    height: 200px;
     transition: .5s ease;
     -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
 }
 
-.desc {
-    display: block;
-    font-size: 16px;
-    color: ghostwhite;
-}
-.imageContainer {
-    border: 1px solid;
-    padding: 10px;
+.imageContainer p {
+    font-size: 18px;
+    display: inline;
 }
 
-.imageContainer p {
-    display: inline;
-    font-size: 18px;
+.description {
+    font-size: 16px;
+    color: goldenrod;
+    float: right;
+    padding-top: 5px;
 }
 
 .imageContainer:hover .image {
@@ -39,12 +45,6 @@ h3 {
     width: 500px;
     overflow: hidden;
     padding-left: 15px;
-}
-
-.mainBody {
-    width: 300px;
-    padding-left: 25px;
-    float: left;
 }
 
 .sidebar {
