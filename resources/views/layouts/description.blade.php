@@ -1,8 +1,3 @@
-<?php
-/**
- * @var array $movieDesc
- */
-?>
 @section('title', 'Description')
 @section('description')
     <div class="description">

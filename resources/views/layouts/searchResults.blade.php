@@ -17,7 +17,6 @@
             <?php foreach ($searchResults as $movie): ?>
             <li class="sub">
                 <div class="imageContainer">
-                    <div class="middle"><?php echo $movie['Title'];?></div>
                     <p id="movieTitle" data-title="<?php echo $movie['Title'];?>"
                          data-year="<?php echo $movie['Year'];?>">
                     </p>

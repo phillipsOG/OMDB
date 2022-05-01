@@ -13,9 +13,7 @@
             @include('layouts.sidebar')
         @show
     </div>
-    <div class="wrapper">
-        @yield('homepage')
-    </div>
-        @yield('poster')
+    @yield('homepage')
+    @yield('poster')
 </body>
 </html>

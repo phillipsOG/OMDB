@@ -6,8 +6,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Routing\Controller as BaseController;
 use GuzzleHttp\Client;
 use Illuminate\View\View;
-use phpDocumentor\Reflection\Types\Integer;
-
 class SearchController extends BaseController
 {
     private Client $client;
@@ -81,5 +79,28 @@ class SearchController extends BaseController
             dd($e->getMessage());
         }
         return $parsed;
+    }
+
+    /**
+     * @return array
+     */
+    function getTrending(): array
+    {
+        $movie_title = "Inception";
+        $movie_title2 = "Mask";
+        $finalUrl = $this->buildApiUrl($movie_title);
+        $finalUrl2 = $this->buildApiUrl($movie_title2);
+        try {
+            $res = $this->client->request('GET', $finalUrl, []);
+            $res2 = $this->client->request('GET', $finalUrl2, []);
+            $resBody = $res->getBody()->getContents();
+            $resBody2 = $res2->getBody()->getContents();
+            $parsed = json_decode($resBody, true);
+            $parsed2 = json_decode($resBody2, true);
+            $trueParsed = array_merge($parsed, $parsed2);
+        } catch (GuzzleException $e) {
+            dd($e->getMessage());
+        }
+        return $trueParsed;
     }
 }
