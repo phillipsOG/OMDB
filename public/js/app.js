@@ -2177,12 +2177,12 @@ $(document).ready(function () {
 $(document).ready(function () {
   $("#searchImg.image").on("click", function (ev) {
     var images = document.getElementsByClassName('imageContainer');
+    var movies = document.querySelector('#movieTitle');
 
     var _loop = function _loop(i) {
       images[i].onclick = function (img) {
-        var title = images[i].querySelectorAll('p')[0].innerText;
-        var year = images[i].querySelectorAll('p')[1].innerText; //alert("Image Index: " + i + ", Movie Title: " + title + ", Movie Year: " + year);
-
+        var title = images[i].querySelectorAll('p')[0].dataset.title;
+        var year = images[i].querySelectorAll('p')[0].dataset.year;
         getTitleDesc(title, year);
       };
     };
@@ -2205,9 +2205,22 @@ function getTitleDesc(movie_title, movie_year) {
       "movieYear": movie_year
     },
     success: function success(response) {
-      console.log(response); //let movieResults = response['Plot'];
+      console.log(response);
+      $('#test').html(response['Movies']);
+      var movies = document.getElementsByClassName('description');
 
-      $('#movieDesc').html(response['Plot']);
+      if (response['Poster'] != "N/A") {
+        $('#m-poster').attr("src", response['Poster']);
+      } else {
+        $('#m-poster').attr("src", "https://i.imgur.com/jHsym5q.png");
+      }
+
+      movies[0].querySelectorAll('p')[0].innerText = response['Title'];
+      movies[0].querySelectorAll('p')[1].innerText = response['Genre'];
+      movies[0].querySelectorAll('p')[2].innerText = "Rating " + response['imdbRating'];
+      movies[0].querySelectorAll('p')[3].innerText = "Released " + response['Released'];
+      movies[0].querySelectorAll('p')[4].innerText = "Director " + response['Director'];
+      movies[0].querySelectorAll('p')[5].innerText = "Summary\n\n" + response['Plot'];
     }
   });
 }
@@ -2222,9 +2235,8 @@ function getTitle(movie_title) {
     data: {
       "movieName": movie_title
     },
-    success: function success(response) {
-      var movieResults = response['results'];
-      $('#test2').html(movieResults);
+    success: function success(response) {//let movieResults = response['results'];
+      //$('#test2').html(movieResults);
     }
   });
 }

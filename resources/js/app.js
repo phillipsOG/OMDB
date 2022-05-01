@@ -14,12 +14,12 @@ $(document).ready(function(){
 $(document).ready(function() {
     $("#searchImg.image").on("click", function(ev) {
         let images = document.getElementsByClassName('imageContainer');
+        let movies = document.querySelector('#movieTitle');
         for(let i = 0; i < images.length; i++)
         {
             images[i].onclick = function (img) {
-                const title = images[i].querySelectorAll('p')[0].innerText;
-                const year = images[i].querySelectorAll('p')[1].innerText;
-                //alert("Image Index: " + i + ", Movie Title: " + title + ", Movie Year: " + year);
+                const title = images[i].querySelectorAll('p')[0].dataset.title;
+                const year = images[i].querySelectorAll('p')[0].dataset.year;
                 getTitleDesc(title, year);
             }
         }
@@ -35,8 +35,23 @@ function getTitleDesc(movie_title, movie_year)
        data: {"movieName": movie_title, "movieYear": movie_year},
        success: function(response) {
            console.log(response);
-           //let movieResults = response['Plot'];
-           $('#movieDesc').html(response['Plot']);
+           $('#test').html(response['Movies']);
+           let movies = document.getElementsByClassName('description');
+           if(response['Poster'] != "N/A")
+           {
+               $('#m-poster').attr("src", response['Poster']);
+           }
+           else
+           {
+               $('#m-poster').attr("src", "https://i.imgur.com/jHsym5q.png");
+           }
+
+           movies[0].querySelectorAll('p')[0].innerText = response['Title'];
+           movies[0].querySelectorAll('p')[1].innerText = response['Genre'];
+           movies[0].querySelectorAll('p')[2].innerText = "Rating " + response['imdbRating'];
+           movies[0].querySelectorAll('p')[3].innerText = "Released " + response['Released'];
+           movies[0].querySelectorAll('p')[4].innerText = "Director " + response['Director'];
+           movies[0].querySelectorAll('p')[5].innerText = "Summary\n\n" + response['Plot'];
        }
     });
 }
@@ -49,8 +64,8 @@ function getTitle(movie_title)
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         data: {"movieName": movie_title},
         success: function (response) {
-            let movieResults = response['results'];
-            $('#test2').html(movieResults);
+            //let movieResults = response['results'];
+            //$('#test2').html(movieResults);
         }
     });
 }

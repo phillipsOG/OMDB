@@ -13,14 +13,9 @@
             @include('layouts.sidebar')
         @show
     </div>
-    <div class="description" id="movieDesc">
-        @section('description')
-            @include('layouts.description')
-        @show
-    </div>
     <div class="wrapper">
         @yield('homepage')
-        @yield('returnedContent')
     </div>
+        @yield('poster')
 </body>
 </html>

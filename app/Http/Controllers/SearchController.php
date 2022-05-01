@@ -66,32 +66,20 @@ class SearchController extends BaseController
     }
 
     /**
-     * @return view
+     * @return array
      */
-    function movieSearchDesc(): view
+    function movieSearchDesc(): array
     {
         $movie_title = $_GET['movieName'];
         $movie_year = $_GET['movieYear'];
         $finalUrl = $this->buildApiUrlDesc($movie_title, $movie_year);
-        //echo $finalUrl;
         try {
             $res = $this->client->request('GET', $finalUrl, []);
             $resBody = $res->getBody()->getContents();
             $parsed = json_decode($resBody, true);
-            $desc = [
-                "Desc" => $parsed
-            ];
-
-           //return $desc;
         } catch (GuzzleException $e) {
             dd($e->getMessage());
         }
-        //var_dump($parsed);
-        $descriptionView = view('layouts/description', ['movieDesc' => $parsed]);
-        $renderedDescView = $descriptionView->render();
-        $results = [
-            "results" => $renderedDescView
-        ];
-        response()->json($parsed)->send();
+        return $parsed;
     }
 }
