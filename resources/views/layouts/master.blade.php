@@ -13,6 +13,8 @@
             @include('layouts.sidebar')
         @show
     </div>
+    @yield('singlePosterViewNY')
+    @yield('singlePosterView')
     @yield('homepage')
     @yield('poster')
 </body>

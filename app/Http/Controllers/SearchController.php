@@ -6,12 +6,16 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Routing\Controller as BaseController;
 use GuzzleHttp\Client;
 use Illuminate\View\View;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
+
 class SearchController extends BaseController
 {
     private Client $client;
     private string $apiKey;
     private string $baseUrl = "https://www.omdbapi.com/?s=";
     private string $baseUrlDesc = "https://www.omdbapi.com/?t=";
+    private string $baseUrlImdbID = "https://www.omdbapi.com/?i=";
+    private string $fullPlot = "&plot=full";
 
     public function __construct()
     {
@@ -43,15 +47,37 @@ class SearchController extends BaseController
     }
 
     /**
+     * @param string $userSearchTerm
+     * @param string $movieYear
+     * @return string
+     */
+    private function buildApiUrlDescFull(string $userSearchTerm, string $movieYear): string
+    {
+        $apiKey = "&apikey=$this->apiKey";
+        $movieYearUrl = "&y=".$movieYear;
+        return $this->baseUrlDesc . $userSearchTerm . $movieYearUrl . $this->fullPlot . $apiKey;
+    }
+
+    /**
+     * @param string $imdbID
+     * @return string
+     */
+    private function buildApiUrlImdbID(string $imdbID): string
+    {
+        $apiKey = "&apikey=$this->apiKey";
+        $movieID = $imdbID;
+        return $this->baseUrlImdbID . $movieID . $this->fullPlot . $apiKey;
+    }
+
+    /**
      * @return View
      */
     function searchResults(): View
     {
         // TODO: Check isset
         $usrSearch = $_GET['movie_title'];
-
+        $usrSearch = trim($usrSearch);
         $finalUrl = $this->buildApiUrl($usrSearch);
-
         try {
             $res = $this->client->request('GET', $finalUrl, []);
             $resBody = $res->getBody()->getContents();
@@ -82,25 +108,88 @@ class SearchController extends BaseController
     }
 
     /**
-     * @return array
+     * @return view
      */
-    function getTrending(): array
+    function singlePosterView(): view
     {
-        $movie_title = "Inception";
-        $movie_title2 = "Mask";
-        $finalUrl = $this->buildApiUrl($movie_title);
-        $finalUrl2 = $this->buildApiUrl($movie_title2);
+        $imdbID = $_GET['i'];
+        $finalUrl = $this->buildApiUrlImdbID($imdbID);
         try {
             $res = $this->client->request('GET', $finalUrl, []);
-            $res2 = $this->client->request('GET', $finalUrl2, []);
             $resBody = $res->getBody()->getContents();
-            $resBody2 = $res2->getBody()->getContents();
             $parsed = json_decode($resBody, true);
-            $parsed2 = json_decode($resBody2, true);
-            $trueParsed = array_merge($parsed, $parsed2);
         } catch (GuzzleException $e) {
             dd($e->getMessage());
         }
-        return $trueParsed;
+        return view('pages/singlePosterView', ['movieDesc' => $parsed]);
+    }
+    /**
+     * @return view
+     */
+    function singlePosterViewNoYear(): view
+    {
+        $movie_title = $_GET['movieName'];
+        $finalUrl = $this->buildApiUrl($movie_title);
+        try {
+            $res = $this->client->request('GET', $finalUrl, []);
+            $resBody = $res->getBody()->getContents();
+            $parsed = json_decode($resBody, true);
+        } catch (GuzzleException $e) {
+            dd($e->getMessage());
+        }
+        return view('test_views/singlePosterView2', ['movieDesc' => $parsed]);
+    }
+
+    /**
+     * @return array
+     */
+    function raw(): array
+    {
+        $movie_title = $_GET['movieName'];
+        $finalUrl = $this->buildApiUrl($movie_title);
+        try {
+            $res = $this->client->request('GET', $finalUrl, []);
+            $resBody = $res->getBody()->getContents();
+            $parsed = json_decode($resBody, true);
+        } catch (GuzzleException $e) {
+            dd($e->getMessage());
+        }
+        return $parsed;
+    }
+
+    /**
+     * @return array
+     * @throws GuzzleException
+     */
+    function getTrending(): array
+    {
+        $movieList = [
+          'Mask',
+          'Mean Girls'
+        ];
+
+        $trendingMovies = [
+            'Search' => []
+        ];
+        $validMovieList = [
+            'Search' => []
+        ];
+        foreach($movieList as $movieTitle)
+        {
+            $apiUrl = $this->buildApiUrl($movieTitle);
+            $res = $this->client->request('GET', $apiUrl, []);
+            $body = $res->getBody()->getContents();
+            $parsed = json_decode($body, true);
+            $trendingMovies['Search'][] = $parsed['Search'];
+            foreach($parsed['Search'] as $movieResult)
+            {
+              if(isset($movieResult['Poster']) && !empty($movieResult['Poster']) && $movieResult['Poster'] != 'N/A')
+              {
+                  $validMovieList[] = $movieResult;
+              }
+            }
+        }
+        //$trendingMovies['Search'][] = $validMovieList;
+        return $trendingMovies;
     }
 }

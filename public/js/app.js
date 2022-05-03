@@ -2165,24 +2165,14 @@ module.exports = {
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 $(document).ready(function () {
-  $("#movieForm").on("submit", function (ev) {
-    var usrInput = $("#movie_title").val();
-    $("#test").text(usrInput);
-    console.log("You clicked submit, input: " + usrInput);
-    getTitle(usrInput);
-  }); //https://api.jquery.com/jquery.getjson/
-
-  console.log("this is an edit test");
-});
-$(document).ready(function () {
   $("#searchImg.image").on("click", function (ev) {
     var images = document.getElementsByClassName('imageContainer');
-    var movies = document.querySelector('#movieTitle');
 
     var _loop = function _loop(i) {
       images[i].onclick = function (img) {
         var title = images[i].querySelectorAll('p')[0].dataset.title;
         var year = images[i].querySelectorAll('p')[0].dataset.year;
+        console.log(title + ", Year: " + year);
         getTitleDesc(title, year);
       };
     };
@@ -2190,6 +2180,74 @@ $(document).ready(function () {
     for (var i = 0; i < images.length; i++) {
       _loop(i);
     }
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+});
+$(document).ready(function () {
+  $('#desc-cont').on("click", function (ev) {
+    ev.stopPropagation();
+  });
+});
+$(document).ready(function () {
+  $('#description').on("click", function (ev) {
+    $('#description').animate({
+      width: 'toggle'
+    });
+    $('#description').hide();
+    $('#test').show();
+  });
+});
+$(document).ready(function () {
+  $('#test').on("click", function (ev) {
+    if (!($('#box-office.box-office').text().length > 1)) {
+      $('#test').hide();
+      $('#description').animate({
+        width: 'toggle'
+      });
+    }
+  });
+});
+$(document).ready(function () {
+  $('#m-poster').on("click", function (ev) {
+    var movies = document.getElementsByClassName('description');
+    var imdbID = movies[0].querySelectorAll('p')[0].dataset.imdbID;
+    $.ajax({
+      type: "GET",
+      url: "/viewPoster",
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      data: {
+        "i": imdbID
+      },
+      success: function success(response) {
+        window.location.href = "/viewPoster?i=" + imdbID;
+      }
+    });
+    ev.stopPropagation();
+  });
+});
+$(document).ready(function () {
+  $("#searchImg.image").on("dblclick", function (ev) {
+    var movies = document.getElementsByClassName('description');
+    var imdbID = movies[0].querySelectorAll('p')[0].dataset.imdbID;
+    $.ajax({
+      type: "GET",
+      url: "/viewPoster",
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      data: {
+        "i": imdbID
+      },
+      success: function success(response) {
+        window.location.href = "/viewPoster?i=" + imdbID;
+      }
+    });
   });
 });
 
@@ -2205,7 +2263,6 @@ function getTitleDesc(movie_title, movie_year) {
       "movieYear": movie_year
     },
     success: function success(response) {
-      console.log(response);
       $('#test').html(response['Movies']);
       var movies = document.getElementsByClassName('description');
 
@@ -2215,28 +2272,13 @@ function getTitleDesc(movie_title, movie_year) {
         $('#m-poster').attr("src", "https://i.imgur.com/jHsym5q.png");
       }
 
-      movies[0].querySelectorAll('p')[0].innerText = response['Title'];
-      movies[0].querySelectorAll('p')[1].innerText = response['Genre'];
-      movies[0].querySelectorAll('p')[2].innerText = "Rating " + response['imdbRating'];
-      movies[0].querySelectorAll('p')[3].innerText = "Released " + response['Released'];
-      movies[0].querySelectorAll('p')[4].innerText = "Director " + response['Director'];
-      movies[0].querySelectorAll('p')[5].innerText = "Summary\n\n" + response['Plot'];
-    }
-  });
-}
-
-function getTitle(movie_title) {
-  $.ajax({
-    type: "GET",
-    url: "/movieSearch",
-    headers: {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    },
-    data: {
-      "movieName": movie_title
-    },
-    success: function success(response) {//let movieResults = response['results'];
-      //$('#test2').html(movieResults);
+      movies[0].querySelectorAll('p')[0].dataset.imdbID = response['imdbID'];
+      movies[0].querySelectorAll('p')[1].innerText = response['Title'];
+      movies[0].querySelectorAll('p')[2].innerText = response['Genre'];
+      movies[0].querySelectorAll('p')[3].innerText = "Rating " + response['imdbRating'];
+      movies[0].querySelectorAll('p')[4].innerText = "Released " + response['Released'];
+      movies[0].querySelectorAll('p')[5].innerText = "Director " + response['Director'];
+      movies[0].querySelectorAll('p')[6].innerText = "Summary\n\n" + response['Plot'];
     }
   });
 }
