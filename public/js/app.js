@@ -2165,15 +2165,14 @@ module.exports = {
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 $(document).ready(function () {
-  $("#searchImg.image").on("click", function (ev) {
+  var searchImage = $("#searchImg.image");
+  searchImage.on("click", function () {
     var images = document.getElementsByClassName('imageContainer');
 
     var _loop = function _loop(i) {
-      images[i].onclick = function (img) {
-        var title = images[i].querySelectorAll('p')[0].dataset.title;
-        var year = images[i].querySelectorAll('p')[0].dataset.year;
-        console.log(title + ", Year: " + year);
-        getTitleDesc(title, year);
+      images[i].onclick = function () {
+        var imdbID = images[i].querySelectorAll('p')[0].dataset.imdbid;
+        getTitleDesc(imdbID);
       };
     };
 
@@ -2186,35 +2185,29 @@ $(document).ready(function () {
       behavior: 'smooth'
     });
   });
-});
-$(document).ready(function () {
   $('#desc-cont').on("click", function (ev) {
     ev.stopPropagation();
   });
-});
-$(document).ready(function () {
-  $('#description').on("click", function (ev) {
-    $('#description').animate({
-      width: 'toggle'
-    });
+  $('#description').on("click", function () {
+    //$('#description').animate({width: 'toggle'});
     $('#description').hide();
-    $('#test').show();
+    $('#collapse-description').show();
   });
-});
-$(document).ready(function () {
-  $('#test').on("click", function (ev) {
+  $('#collapse-description').on("click", function () {
     if (!($('#box-office.box-office').text().length > 1)) {
-      $('#test').hide();
-      $('#description').animate({
-        width: 'toggle'
-      });
+      $('#collapse-description').hide();
+      $('#description').show();
     }
   });
-});
-$(document).ready(function () {
+
+  if ($('#searchImg.image').attr('src') === '') {
+    alert('true');
+  }
+
   $('#m-poster').on("click", function (ev) {
     var movies = document.getElementsByClassName('description');
-    var imdbID = movies[0].querySelectorAll('p')[0].dataset.imdbID;
+    var movie_title = movies[0].querySelectorAll('p')[1].innerText;
+    var movie_year = movies[0].querySelectorAll('p')[4].innerText.replace('Released ', '');
     $.ajax({
       type: "GET",
       url: "/viewPoster",
@@ -2222,36 +2215,18 @@ $(document).ready(function () {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
       data: {
-        "i": imdbID
+        "movieTitle": movie_title,
+        "movieYear": movie_year
       },
-      success: function success(response) {
-        window.location.href = "/viewPoster?i=" + imdbID;
+      success: function success() {
+        window.location.href = "/viewPoster?movieTitle=" + movie_title + "&movieYear=" + movie_year;
       }
     });
-    ev.stopPropagation();
-  });
-});
-$(document).ready(function () {
-  $("#searchImg.image").on("dblclick", function (ev) {
-    var movies = document.getElementsByClassName('description');
-    var imdbID = movies[0].querySelectorAll('p')[0].dataset.imdbID;
-    $.ajax({
-      type: "GET",
-      url: "/viewPoster",
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      data: {
-        "i": imdbID
-      },
-      success: function success(response) {
-        window.location.href = "/viewPoster?i=" + imdbID;
-      }
-    });
+    ev.stopPropagation(); //stops highlighting on poster click
   });
 });
 
-function getTitleDesc(movie_title, movie_year) {
+function getTitleDesc(movie_imdbID) {
   $.ajax({
     type: "GET",
     url: "/movieSearchDesc",
@@ -2259,26 +2234,27 @@ function getTitleDesc(movie_title, movie_year) {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
     data: {
-      "movieName": movie_title,
-      "movieYear": movie_year
+      "i": movie_imdbID
     },
     success: function success(response) {
-      $('#test').html(response['Movies']);
-      var movies = document.getElementsByClassName('description');
+      var movies = document.getElementById('#description');
 
-      if (response['Poster'] != "N/A") {
+      if (response['Poster'] !== "N/A") {
         $('#m-poster').attr("src", response['Poster']);
       } else {
         $('#m-poster').attr("src", "https://i.imgur.com/jHsym5q.png");
       }
 
-      movies[0].querySelectorAll('p')[0].dataset.imdbID = response['imdbID'];
-      movies[0].querySelectorAll('p')[1].innerText = response['Title'];
-      movies[0].querySelectorAll('p')[2].innerText = response['Genre'];
-      movies[0].querySelectorAll('p')[3].innerText = "Rating " + response['imdbRating'];
-      movies[0].querySelectorAll('p')[4].innerText = "Released " + response['Released'];
-      movies[0].querySelectorAll('p')[5].innerText = "Director " + response['Director'];
-      movies[0].querySelectorAll('p')[6].innerText = "Summary\n\n" + response['Plot'];
+      if (typeof movies !== "undefined") {
+        $('#m-indent').attr('imdbid', response['imdbID']);
+        $('#m-title').text(response['Title']);
+        $('#m-genre').text(response['Genre']);
+        $('#m-rating').html(response['imdbRating']);
+        $('#m-year').html(response['Year']);
+        $('#m-director').html("Director<br><br>" + response['Director']);
+        $('#m-summary').html("Summary<br><br>" + response['Plot']);
+        $('#m-actors').html("Lead actors<br><br>" + response['Actors']);
+      }
     }
   });
 }

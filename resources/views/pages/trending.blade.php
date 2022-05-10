@@ -7,19 +7,18 @@
 @section('trending')
     <ul>
         <?php
-        $keys = array_keys($trendingMovies);
-        for($i = 0; $i < count($keys); $i++)
-        {?>
-        <?php foreach($trendingMovies[$keys[$i]] as $trending): ?>
+        $counter = count($trendingMovies[0]) - 1;
+        for($i = 0; $i < $counter; $i++) {?>
         <li class="sub">
             <div class="imageContainer">
-                <p id="movieTitle" data-title="<?php echo $trending['Title'];?>"
-                   data-year="<?php echo strlen($trending['Year']) > 4 ? substr($trending['Year'], 0, -7) : substr($trending['Year'], -4);?>">
+                <p id="movieTitle" data-title="<?php echo $trendingMovies[0][$i]['Title'];?>"
+                   data-year="<?php echo $trendingMovies[0][$i]['Year'];?>"
+                   data-imdbID="<?php echo $trendingMovies[0][$i]['imdbID']; ?>">
                 </p>
                 <img class="image" id="searchImg" src="
-                                <?php if($trending['Poster'] != "N/A")
+                <?php if($trendingMovies[0][$i]['Poster'] != "N/A")
                 {
-                    echo $trending['Poster'];
+                    echo $trendingMovies[0][$i]['Poster'];
                 }
                 else {
                     echo "https://i.imgur.com/jHsym5q.png";
@@ -27,7 +26,6 @@
                 ?>"/>
             </div>
         </li>
-        <?php endforeach; ?>
         <?php };?>
     </ul>
 @endsection

@@ -5,7 +5,7 @@
 ?>
 @section('title', 'Description')
 @section('description')
-    <div class="test" id="test"></div>
+    <div class="collapse-description" id="collapse-description"></div>
     <div class="description" id="description">
         <img class="m-poster" id="m-poster" src="
         <?php if(isset($movieDesc['Poster']))
@@ -43,25 +43,32 @@
                 echo "Movie Genre";
             }
             ?></p>
-
-        <p id="m-rating"><?php
-            if(isset($movieDesc['imdbRating']))
-            {
-                echo "Rating " . $movieDesc['imdbRating'];
-            } else {
-                echo "Movie Rating";
-            }
-            ?>
-        </p>
-        <p id="m-year"><?php
-            if(isset($movieDesc['Released']))
-            {
-                echo "Released " . $movieDesc['Released'];
-            } else {
-                echo "Movie Year ";
-            }
-            ?>
-        </p>
+        <table>
+            <tr>
+                <th>Year</th>
+                <th>IMDB Rating</th>
+            </tr>
+            <tr>
+                <td id="m-year"><?php
+                    if(isset($movieDesc['Year']))
+                    {
+                        echo "Released " . $movieDesc['Year'];
+                    } else {
+                        echo "Movie Year ";
+                    }
+                    ?>
+                </td>
+                <td id="m-rating"><?php
+                    if(isset($movieDesc['imdbRating']))
+                    {
+                        echo "Rating " . $movieDesc['imdbRating'];
+                    } else {
+                        echo "Movie Rating";
+                    }
+                    ?>
+                </td>
+            </tr>
+        </table>
         <p id="m-director"><?php
             if(isset($movieDesc['Director']))
             {
@@ -77,6 +84,15 @@
                 echo "Summary<br><br>" . $movieDesc['Plot'];
             } else {
                 echo "Movie Summary";
+            }
+            ?>
+        </p>
+        <p id="m-actors"><?php
+            if(isset($movieDesc['Actors']))
+            {
+                echo "Summary<br><br>" . $movieDesc['Actors'];
+            } else {
+                echo "Lead actors";
             }
             ?>
         </p>

@@ -19,6 +19,7 @@ use App\Http\Controllers\SearchController;
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/searchResults', [SearchController::class, 'searchResults']);
 Route::get('/movieSearchDesc', [SearchController::class, 'movieSearchDesc']);
+Route::get('/movieSearchDescTitleYear', [SearchController::class, 'movieSearchDescTitleYear']);
 Route::get('/viewPoster', [SearchController::class, 'singlePosterView']);
 Route::get('/viewPosterNY', [SearchController::class, 'singlePosterViewNoYear']);
 Route::get('/raw', [SearchController::class, 'raw']);

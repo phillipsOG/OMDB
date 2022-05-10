@@ -18,7 +18,8 @@
             <li class="sub">
                 <div class="imageContainer">
                     <p id="movieTitle" data-title="<?php echo $movie['Title'];?>"
-                         data-year="<?php echo $movie['Year'];?>">
+                         data-year="<?php echo $movie['Year'];?>"
+                         data-imdbID="<?php echo $movie['imdbID']?>">
                     </p>
                     <img class="image" id="searchImg" src="
                         <?php if($movie['Poster'] != "N/A")
