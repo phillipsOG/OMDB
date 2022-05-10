@@ -81,7 +81,7 @@
         <p id="m-summary"><?php
             if(isset($movieDesc['Plot']))
             {
-                echo "Summary<br><br>" . $movieDesc['Plot'];
+                ?><p id="m-summary-data">Summary<br><br> <?php echo $movieDesc['Plot'];?></p><?php
             } else {
                 echo "Movie Summary";
             }

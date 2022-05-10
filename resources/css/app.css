@@ -73,12 +73,19 @@ li {
     margin-left: 20px;
 }
 
-table {
+.description table {
     border-collapse: collapse;
     width: 100%;
 }
 
-td, th {
+th {
+    text-align: left;
+    padding: 8px 6px 8px 0px;
+    color: gray;
+    font-weight:normal;
+}
+
+td {
     text-align: left;
     padding: 8px 6px 8px 0px;
     color: white;
@@ -89,6 +96,15 @@ td, th {
     display: inline;
     margin: 7px;
 }
+
+#m-genre, #m-director, #m-summary, #m-actors {
+    color: gray;
+}
+
+#m-summary-data {
+    color: white;
+}
+
 
 .description .m-poster:hover {
     opacity: 0.5;
