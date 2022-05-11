@@ -42,19 +42,13 @@ h3 {
     margin-left: 30px;
 }
 
-.middle {
-    transition: .5s ease;
-    opacity: 0;
-    position: absolute;
-    vertical-align: top;
-    display: inline;
-    top: 40%;
-    left: 20%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    text-align: center;
-    font-weight: 600;
-    color: white;
+.results-body-single-view {
+    overflow: hidden;
+}
+
+.results-body-single-view #searchImg {
+    width: 360px;
+    height: auto;
 }
 
 .imageContainer:hover .middle {
@@ -73,21 +67,32 @@ li {
     margin-left: 20px;
 }
 
+.box-office table {
+    border-collapse: collapse;
+    width: 100%;
+    padding-bottom: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    table-layout: fixed;
+}
+
 .description table {
     border-collapse: collapse;
     width: 100%;
+    padding-bottom: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 th {
     text-align: left;
-    padding: 8px 6px 8px 0px;
+    padding: 16px 6px 10px 0px;
     color: gray;
-    font-weight:normal;
+    font-weight: bold;
+    margin: 10px 0px 10px 0px;
 }
 
 td {
     text-align: left;
-    padding: 8px 6px 8px 0px;
+    padding: 0px 6px 10px 0px;
     color: white;
     font-weight:normal;
 }
@@ -97,19 +102,52 @@ td {
     margin: 7px;
 }
 
-#m-genre, #m-director, #m-summary, #m-actors {
+#m-genre-data {
     color: gray;
+    font-weight: bold;
+    padding-bottom: 2px;
 }
 
-#m-summary-data {
+#m-director-title, #m-summary-title, #m-actors-title, #m-box-office-title {
+    color: gray;
+    margin: 8px 6px 8px 0px;
+    font-weight: bold;
+}
+
+#m-summary-data, #m-director-data, #m-actors-data, #m-box-office-data {
     color: white;
 }
 
+#m-title {
+    color: white;
+    font-size: 24px;
+}
+
+#m-rating-data {
+    color: goldenrod;
+    display: inline;
+}
+
+#imdb-star {
+    width: 16px;
+    height: auto;
+}
+
+.box-office {
+    color: white;
+    font-size: 16px;
+    text-align: left;
+    margin-top: 3px;
+    margin-left: 260px;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-weight: 100;
+    border-left: 1px solid rgba(255, 255, 255, 0.6);
+}
 
 .description .m-poster:hover {
     opacity: 0.5;
     border: 1px solid rgba(167, 66, 235, 0.7);
-
 }
 
 .description .m-poster {
@@ -119,6 +157,11 @@ td {
     transition: .5s ease;
     backface-visibility: hidden;
     border: 1px outset transparent;
+}
+
+.description .m-poster {
+    height: auto;
+    width: 65%;
 }
 
 .imageContainer .image {
@@ -131,12 +174,12 @@ td {
     margin: 5px;
 }
 
-.description #m-summary {
+.description #m-summary-title {
     padding-top: 15px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.box-office #m-summary {
+.box-office #m-summary-title {
     padding-top: 15px;
     border-top: 1px solid rgba(255, 255, 255, 0.6);
 }
@@ -147,31 +190,8 @@ td {
     color: white;
 }
 
-.description .m-poster {
-    height: auto;
-    width: 50%;
-}
-
 p {
     color: white;
-}
-
-.active, .description:hover {
-
-}
-
-.box-office {
-    display: inline-block;
-    color: white;
-    font-size: 16px;
-    text-align: left;
-    margin-top: 3px;
-    margin-left: 60px;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-weight: 100;
-    width: 30%;
-    border-left: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .collapse-description {
@@ -214,8 +234,8 @@ p {
 .sidebar a {
     display: block;
     color: #767a7f;
-    text-align: center;
-    margin-bottom: 100px;
+    text-align: left;
+    margin-bottom: 5px;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
@@ -243,6 +263,7 @@ p {
     color: #767a7f;
     text-align: center;
     padding: 14px 16px;
+    margin-left: 5px;
     text-decoration: none;
     font-size: 20px;
     font-weight: 600;
@@ -257,7 +278,10 @@ p {
 }
 
 .header .search-container {
-    float: right;
+    padding-left: 200px;
+    display: inline-block;
+    max-width: 380px;
+    min-width: 380px;
 }
 
 .header input[type=text] {
@@ -273,8 +297,9 @@ p {
     font-size: 17px;
     border: none;
     cursor: pointer;
-    padding: 8px 12px;
-    margin: 8px 196px 0px 0px;
+    padding: 8px 8px;
+    width: 100%;
+    margin: 8px 80px 0px 0px;
 }
 
 .header input:hover {
@@ -284,6 +309,10 @@ p {
 .header input:focus {
     outline: none;
     background: rgba(255, 255, 255, 0.7);
+}
+
+.header input::placeholder {
+    text-align: left;
 }
 
 @media screen and (max-width: 600px) {

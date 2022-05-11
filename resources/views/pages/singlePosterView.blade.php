@@ -1,59 +1,46 @@
 <?php
 /**
- * @var array $movieDesc
+ * @var array $movieData
  */
 ?>
 @extends('layouts.master')
-@section('title', $movieDesc['Title'])
+@section('title', $movieData['title'])
 @section('singlePosterView')
     <div class="main-body">
-        <div class="results-body">
-            <p class="title" id="test"><?php echo "Your searched for: ".$movieDesc['Title']?></p>
+        <div class="results-body-single-view">
+            <p class="title" id="test"><?php echo "Your searched for: ". $movieData['title']?></p>
             <ul>
-                <li class="sub">
+                <li>
                     <div class="imageContainer">
-                        <p id="movieTitle" data-title="<?php echo $movieDesc['Title'];?>"
-                           data-year="<?php echo $movieDesc['Year'];?>">
+                        <p id="movieTitle" data-title="<?php echo $movieData['title'];?>"
+                           data-year="<?php echo $movieData['year'];?>">
                         </p>
-                        <img class="image" id="searchImg" src="
-                        <?php if($movieDesc['Poster'] != "N/A")
-                        {
-                            echo $movieDesc['Poster'];
-                        }
-                        else {
-                            echo "https://i.imgur.com/jHsym5q.png";
-                        }
-                        ?>"/>
+                        <img class="image" id="searchImg" src="<?php echo $movieData['posterUrl']; ?>" alt="movie poster"/>
                     </div>
                 </li>
             </ul>
             <div class="box-office" id="box-office">
-                <?php
-                    echo $movieDesc['Title'];
-                    echo "<br><br>";
-                    echo $movieDesc['Genre'];
-                    echo "<br><br>";
-                    echo "Rating " . $movieDesc['imdbRating'];
-                    /*1.2682
-                    $noDolla = substr($movieDesc['BoxOffice'], 1, strlen($movieDesc['BoxOffice']));
-                    $noDolla = (int)$noDolla;
-                    //we want approx. 95,156,989.61
-                    $fmt = numfmt_create( 'en_GB', NumberFormatter::CURRENCY );
-                    $noDollaFormatted = numfmt_format_currency($fmt, ($noDolla/1.2489), "GBP");
-                    echo "Box Office £" . $noDollaFormatted . "<br><br>";*/
-                    echo "<br><br>";
-                    echo "Released " . $movieDesc['Year'];
-                    echo "<br><br>";
-                    if(isset($movieDesc['BoxOffice'])) { echo "Box Office " . "<br><br>".
-                    $movieDesc['BoxOffice'];}
-                    echo "<br><br>";
-                    echo "Director " . "<br><br>" . $movieDesc['Director'];
-                    echo "<br>";
-                    ?>
-                    <p id="m-summary"><?php
-                    echo "Summary<br><br>" . $movieDesc['Plot'] . "<br><br>";
-                    echo "Lead actors<br><br>" . $movieDesc['Actors'];
-                    ?></p>
+                <p id="m-title"><?php echo $movieData['title'];?></p>
+                <p id="m-genre-data"><?php echo $movieData['genre'];?></p>
+                <table>
+                    <tr>
+                        <th>IMDB Rating</th>
+                        <th>Year</th>
+                        <th>Box office</th>
+                    </tr>
+                    <tr>
+                        <td id="m-rating"><image id="imdb-star" src="https://i.imgur.com/L9hNySh.png"></image>
+                            <p id="m-rating-data"> <?php echo $movieData['rating'];?></p></td>
+                        <td id="m-year"><?php echo $movieData['year'];?></td>
+                        <td><?php echo $movieData['boxOffice'];?></p></td>
+                    </tr>
+                </table>
+                <p id="m-director-title">Director</p>
+                <p id="m-director-data"><?php echo $movieData['director'];?></p>
+                <p id="m-summary-title">Summary</p>
+                <p id="m-summary-data"><?php echo $movieData['summary'];?></p>
+                <p id="m-actors-title">Lead actors</p>
+                <p id="m-actors-data"><?php echo $movieData['actors'];?></p>
             </div>
         </div>
     </div>

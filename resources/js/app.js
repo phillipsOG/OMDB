@@ -37,7 +37,7 @@ $(document).ready(function() {
 
     $('#m-poster').on("click", function (ev) {
         let movies = document.getElementsByClassName('description');
-        let movie_title = movies[0].querySelectorAll('p')[1].innerText;
+        let movie_title = movies[0].querySelectorAll('p')[0].innerText;
         let movie_year = movies[0].querySelectorAll('p')[4].innerText.replace('Released ', '');
         $.ajax({
             type: "GET",
@@ -68,12 +68,13 @@ function getTitleDesc(movie_imdbID) {
            if (typeof movies !== "undefined") {
                $('#m-indent').attr('imdbid', response['imdbID']);
                $('#m-title').text(response['Title']);
-               $('#m-genre').text(response['Genre']);
-               $('#m-rating').html(response['imdbRating']);
+               $('#m-genre-data').text(response['Genre']);
+               $('#imdb-star').attr("src", "https://i.imgur.com/L9hNySh.png");
+               $('#m-rating-data').html(response['imdbRating']);
                $('#m-year').html(response['Year']);
-               $('#m-director').html("Director<br><br>" + response['Director']);
-               $('#m-summary').html("Summary<br><br>" + response['Plot']);
-               $('#m-actors').html("Lead actors<br><br>" + response['Actors']);
+               $('#m-director-data').html(response['Director']);
+               $('#m-summary-data').html(response['Plot']);
+               $('#m-actors-data').html(response['Actors']);
            }
        }
     });

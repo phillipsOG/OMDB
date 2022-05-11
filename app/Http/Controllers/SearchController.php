@@ -19,8 +19,7 @@ class SearchController extends BaseController
     public function __construct()
     {
         $this->client = new Client();
-        // TODO: Get this from the ENV file
-        $apiKey = "fe080be1";
+        $apiKey = env("OMDB_API_KEY");
         $this->apiKeyUrlPart = "&apikey=$apiKey";
     }
 
@@ -31,17 +30,6 @@ class SearchController extends BaseController
     private function buildApiUrl(string $userSearchTerm): string
     {
         return $this->baseUrl . $userSearchTerm . $this->apiKeyUrlPart;
-    }
-
-    /**
-     * @param string $userSearchTerm
-     * @param string $movieYear
-     * @return string
-     */
-    private function buildApiUrlDesc(string $userSearchTerm, string $movieYear): string
-    {
-        $movieYearUrl = "&y=".$movieYear;
-        return $this->baseUrlDesc . $userSearchTerm . $movieYearUrl . $this->apiKeyUrlPart;
     }
 
     /**
@@ -63,16 +51,6 @@ class SearchController extends BaseController
     {
         $movieID = $imdbID;
         return $this->baseUrlImdbID . $movieID . $this->apiKeyUrlPart;
-    }
-
-    /**
-     * @param string $imdbID
-     * @return string
-     */
-    private function buildApiUrlImdbIDFull(string $imdbID): string
-    {
-        $movieID = $imdbID;
-        return $this->baseUrlImdbID . $movieID . $this->fullPlot . $this->apiKeyUrlPart;
     }
 
     /**
@@ -125,25 +103,6 @@ class SearchController extends BaseController
     }
 
     /**
-     * @return array
-     */
-    function movieSearchDescTitleYear(): array
-    {
-        $movie_name = $_GET['movieName'];
-        $movie_year = $_GET['movieYear'];
-        $finalUrl = $this->buildApiUrlDescFull($movie_name, $movie_year);
-        try {
-            $res = $this->client->request('GET', $finalUrl, []);
-            $resBody = $res->getBody()->getContents();
-            $parsed = json_decode($resBody, true);
-        } catch (GuzzleException $e) {
-            dd($e->getMessage());
-        }
-        return $parsed;
-    }
-
-
-    /**
      * @return view
      */
     function singlePosterView(): view
@@ -155,10 +114,24 @@ class SearchController extends BaseController
             $res = $this->client->request('GET', $finalUrl, []);
             $resBody = $res->getBody()->getContents();
             $parsed = json_decode($resBody, true);
+
+            $movieData = [
+                'title' => $parsed['Title'] ?? 'N/A',
+                'year' => $parsed['Year'] ?? 'N/A',
+                'posterUrl' => $parsed['Poster'] ?? 'N/A',
+                'genre' => $parsed['Genre'] ?? 'N/A',
+                'rating' => $parsed['imdbRating'] ?? 'N/A',
+                'released' => $parsed['Released'] ?? 'N/A',
+                'boxOffice' => $parsed['BoxOffice'] ?? 'N/A',
+                'director' => $parsed['Director'] ?? 'N/A',
+                'summary' => $parsed['Plot'] ?? 'N/A',
+                'actors' => $parsed['Actors'] ?? 'N/A'
+            ];
+
         } catch (GuzzleException $e) {
             dd($e->getMessage());
         }
-        return view('pages/singlePosterView', ['movieDesc' => $parsed]);
+        return view('pages/singlePosterView', ['movieDesc' => $parsed, 'movieData' => $movieData]);
     }
 
     /**
@@ -208,39 +181,5 @@ class SearchController extends BaseController
         }
         $trendingMovies['Search'][] = $validMovieList;
         return $trendingMovies;
-    }
-
-    /**
-     * @return view
-     */
-    function singlePosterViewNoYear(): view
-    {
-        $movie_title = $_GET['movieName'];
-        $finalUrl = $this->buildApiUrl($movie_title);
-        try {
-            $res = $this->client->request('GET', $finalUrl, []);
-            $resBody = $res->getBody()->getContents();
-            $parsed = json_decode($resBody, true);
-        } catch (GuzzleException $e) {
-            dd($e->getMessage());
-        }
-        return view('test_views/singlePosterView2', ['movieDesc' => $parsed]);
-    }
-
-    /**
-     * @return array
-     */
-    function raw(): array
-    {
-        $movie_title = $_GET['movieName'];
-        $finalUrl = $this->buildApiUrl($movie_title);
-        try {
-            $res = $this->client->request('GET', $finalUrl, []);
-            $resBody = $res->getBody()->getContents();
-            $parsed = json_decode($resBody, true);
-        } catch (GuzzleException $e) {
-            dd($e->getMessage());
-        }
-        return $parsed;
     }
 }
