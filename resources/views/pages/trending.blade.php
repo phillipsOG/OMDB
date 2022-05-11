@@ -16,14 +16,7 @@
                    data-imdbID="<?php echo $trendingMovies[0][$i]['imdbID']; ?>">
                 </p>
                 <img class="image" id="searchImg" src="
-                <?php if($trendingMovies[0][$i]['Poster'] != "N/A")
-                {
-                    echo $trendingMovies[0][$i]['Poster'];
-                }
-                else {
-                    echo "https://i.imgur.com/jHsym5q.png";
-                }
-                ?>"/>
+                <?php echo $trendingMovies[0][$i]['Poster'];?>"/>
             </div>
         </li>
         <?php };?>

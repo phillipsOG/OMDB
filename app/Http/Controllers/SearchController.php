@@ -58,7 +58,7 @@ class SearchController extends BaseController
      */
     function searchResults(): View
     {
-        $usrSearch = $_GET['movie_title'];
+        $usrSearch = $_GET['movieTitle'];
         $usrSearch = trim($usrSearch);
         $usrSearch = htmlentities($usrSearch);
         $finalUrl = $this->buildApiUrl($usrSearch);
@@ -66,8 +66,17 @@ class SearchController extends BaseController
             $res = $this->client->request('GET', $finalUrl, []);
             $resBody = $res->getBody()->getContents();
             $parsed = json_decode($resBody, true);
+
             if(!(str_contains($resBody, 'False')))
             {
+                for($i = 0; $i < count($parsed['Search']); $i++)
+                {
+                    if($parsed['Search'][$i]['Poster'] == "N/A")
+                    {
+                        $parsed['Search'][$i]['Poster'] = "https://i.imgur.com/jHsym5q.png";
+                    }
+                }
+
                 return view('layouts/searchResults', ['searchResults' => $parsed['Search']]);
             }
             else
@@ -75,7 +84,7 @@ class SearchController extends BaseController
                 $emptyResult['Search'][] = [
                   'Title' => "",
                   'Year' => "",
-                  'Poster' => "",
+                  'Poster' => "https://i.imgur.com/jHsym5q.png",
                   'imdbID' => ""
                 ];
                 return view('layouts/searchResults', ['searchResults' => $emptyResult['Search']]);
@@ -90,8 +99,8 @@ class SearchController extends BaseController
      */
     function movieSearchDesc(): array
     {
-        $movie_IMDBID = $_GET['i'];
-        $finalUrl = $this->buildApiUrlImdbID($movie_IMDBID);
+        $movieIMDBID = $_GET['i'];
+        $finalUrl = $this->buildApiUrlImdbID($movieIMDBID);
         try {
             $res = $this->client->request('GET', $finalUrl, []);
             $resBody = $res->getBody()->getContents();
@@ -107,9 +116,9 @@ class SearchController extends BaseController
      */
     function singlePosterView(): view
     {
-        $movie_title = $_GET['movieTitle'];
-        $movie_year = $_GET['movieYear'];
-        $finalUrl = $this->buildApiUrlDescFull($movie_title , $movie_year);
+        $movieTitle = $_GET['movieTitle'];
+        $movieYear = $_GET['movieYear'];
+        $finalUrl = $this->buildApiUrlDescFull($movieTitle , $movieYear);
         try {
             $res = $this->client->request('GET', $finalUrl, []);
             $resBody = $res->getBody()->getContents();
@@ -140,11 +149,6 @@ class SearchController extends BaseController
      */
     function getTrending(): array
     {
-        $movieList2 = [
-            'Inception',
-            'Peaky blinders'
-        ];
-
         $movieList = [
             'Mask',
             'Mean Girls',

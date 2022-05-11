@@ -2167,7 +2167,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 $(document).ready(function () {
   var searchImage = $("#searchImg.image");
   searchImage.on("click", function () {
-    var images = document.getElementsByClassName('imageContainer');
+    var images = $('.imageContainer');
 
     var _loop = function _loop(i) {
       images[i].onclick = function () {
@@ -2185,29 +2185,9 @@ $(document).ready(function () {
       behavior: 'smooth'
     });
   });
-  $('#desc-cont').on("click", function (ev) {
-    ev.stopPropagation();
-  });
-  $('#description').on("click", function () {
-    //$('#description').animate({width: 'toggle'});
-    $('#description').hide();
-    $('#collapse-description').show();
-  });
-  $('#collapse-description').on("click", function () {
-    if (!($('#box-office.box-office').text().length > 1)) {
-      $('#collapse-description').hide();
-      $('#description').show();
-    }
-  });
-
-  if ($('#searchImg.image').attr('src') === '') {
-    alert('true');
-  }
-
   $('#m-poster').on("click", function (ev) {
-    var movies = document.getElementsByClassName('description');
-    var movie_title = movies[0].querySelectorAll('p')[0].innerText;
-    var movie_year = movies[0].querySelectorAll('p')[4].innerText.replace('Released ', '');
+    var movieTitle = $('#m-title').text();
+    var movieYear = $('#m-year').text();
     $.ajax({
       type: "GET",
       url: "/viewPoster",
@@ -2215,18 +2195,18 @@ $(document).ready(function () {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
       data: {
-        "movieTitle": movie_title,
-        "movieYear": movie_year
+        "movieTitle": movieTitle,
+        "movieYear": movieYear
       },
       success: function success() {
-        window.location.href = "/viewPoster?movieTitle=" + movie_title + "&movieYear=" + movie_year;
+        window.location.href = "/viewPoster?movieTitle=" + movieTitle + "&movieYear=" + movieYear;
       }
     });
-    ev.stopPropagation(); //stops highlighting on poster click
+    ev.stopPropagation();
   });
 });
 
-function getTitleDesc(movie_imdbID) {
+function getTitleDesc(movieIMDBID) {
   $.ajax({
     type: "GET",
     url: "/movieSearchDesc",
@@ -2234,10 +2214,10 @@ function getTitleDesc(movie_imdbID) {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
     data: {
-      "i": movie_imdbID
+      "i": movieIMDBID
     },
     success: function success(response) {
-      var movies = document.getElementById('#description');
+      var movies = $('#description');
 
       if (response['Poster'] !== "N/A") {
         $('#m-poster').attr("src", response['Poster']);
@@ -2258,6 +2238,25 @@ function getTitleDesc(movie_imdbID) {
       }
     }
   });
+}
+
+$('#desc-cont').on("click", function (ev) {
+  ev.stopPropagation();
+});
+$('#description').on("click", function () {
+  //$('#description').animate({width: 'toggle'});
+  $('#description').hide();
+  $('#collapse-description').show();
+});
+$('#collapse-description').on("click", function () {
+  if (!($('#box-office.box-office').text().length > 1)) {
+    $('#collapse-description').hide();
+    $('#description').show();
+  }
+});
+
+if ($('#searchImg.image').attr('src') === '') {
+  alert('true');
 }
 
 /***/ }),
