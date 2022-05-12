@@ -69,11 +69,11 @@ class SearchController extends BaseController
 
             if(!(str_contains($resBody, 'False')))
             {
-                for($i = 0; $i < count($parsed['Search']); $i++)
+                foreach($parsed['Search'] as $movie)
                 {
-                    if($parsed['Search'][$i]['Poster'] == "N/A")
+                    if($movie['Poster'] == "N/A")
                     {
-                        $parsed['Search'][$i]['Poster'] = "https://i.imgur.com/jHsym5q.png";
+                        $movie['Poster'] = "https://i.imgur.com/jHsym5q.png";
                     }
                 }
 
@@ -161,13 +161,7 @@ class SearchController extends BaseController
 
         shuffle($movieList);
 
-        $trendingMovies = [
-            'Search' => []
-        ];
-
-        $validMovieList = [
-            'Search' => []
-        ];
+        $validMovieList = [];
 
         foreach($movieList as $movieTitle)
         {
@@ -183,7 +177,7 @@ class SearchController extends BaseController
               }
             }
         }
-        $trendingMovies['Search'][] = $validMovieList;
-        return $trendingMovies;
+
+        return $validMovieList;
     }
 }

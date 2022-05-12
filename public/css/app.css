@@ -51,10 +51,6 @@ h3 {
     height: auto;
 }
 
-.imageContainer:hover .middle {
-    opacity: 0.8;
-}
-
 ul {
     padding: 0px;
     display: inline;
@@ -67,6 +63,42 @@ li {
     margin-left: 20px;
 }
 
+.trending-table #searchImg {
+    opacity: 1;
+    width: 175px;
+    height: auto;
+    transition: .5s ease;
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+    margin: 5px;
+
+}
+
+.trending-table tbody {
+    display: inline;
+    vertical-align: top;
+}
+
+.trending-table {
+    padding-bottom: 12px;
+    border-collapse: collapse;
+    display: inline;
+    margin-left: 20px;
+}
+
+.trending-table tr {
+    display: inline;
+}
+
+.trending-table-td {
+    text-align: left;
+    color: white;
+    font-weight:normal;
+    margin: 0px;
+    display: inline;
+    vertical-align: top;
+}
+
 .box-office table {
     border-collapse: collapse;
     width: 100%;
@@ -75,14 +107,7 @@ li {
     table-layout: fixed;
 }
 
-.description table {
-    border-collapse: collapse;
-    width: 100%;
-    padding-bottom: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-th {
+.box-office th {
     text-align: left;
     padding: 16px 6px 10px 0px;
     color: gray;
@@ -90,7 +115,30 @@ th {
     margin: 10px 0px 10px 0px;
 }
 
-td {
+.box-office td {
+    text-align: left;
+    padding: 0px 6px 10px 0px;
+    color: white;
+    font-weight:normal;
+}
+
+
+.description table {
+    border-collapse: collapse;
+    width: 100%;
+    padding-bottom: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.description th {
+    text-align: left;
+    padding: 16px 6px 10px 0px;
+    color: gray;
+    font-weight: bold;
+    margin: 10px 0px 10px 0px;
+}
+
+.description td {
     text-align: left;
     padding: 0px 6px 10px 0px;
     color: white;
@@ -154,17 +202,12 @@ td {
 
 .description .m-poster {
     opacity: 1;
-    width: 25%;
+    width: 275px;
     height: auto;
     transition: .5s ease;
     -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
     border: 1px outset transparent;
-}
-
-.description .m-poster {
-    height: auto;
-    width: 65%;
 }
 
 .imageContainer .image {
@@ -200,9 +243,9 @@ p {
 
 .collapse-description {
     float: right;
-    width: 15%;
+    width: 10%;
     height: 100%;
-    padding: 40px;
+    padding: 10px;
     position: inherit;
     top: 15px;
     left: 30px;
@@ -228,6 +271,11 @@ p {
 
 .imageContainer:hover .image {
     opacity: 0.3;
+}
+
+.imageContainer:hover #searchImg {
+    opacity: 0.3;
+    transition: .5s ease;
 }
 
 .sidebar {

@@ -1,13 +1,14 @@
 require('./bootstrap');
 
 $(document).ready(function() {
-    let searchImage = $("#searchImg.image");
 
-    searchImage.on("click", function() {
+    let moviePoster = $("#searchImg.image");
+
+    moviePoster.on("click", function() {
         let images = $('.imageContainer');
         for(let i = 0; i < images.length; i++) {
             images[i].onclick = function () {
-                const imdbID = images[i].querySelectorAll('p')[0].dataset.imdbid;
+                const imdbID = images[i].dataset.imdbid;
                 getTitleDesc(imdbID);
             }
         }
@@ -26,6 +27,27 @@ $(document).ready(function() {
                 window.location.href = "/viewPoster?movieTitle="+movieTitle+"&movieYear="+movieYear;
             }
         })
+        ev.stopPropagation();
+    });
+
+    $('#description').on("click", function() {
+        //$('#description').animate({width: 'toggle'});
+        $('#description').hide();
+        $('#collapse-description').show();
+    });
+
+    $('#collapse-description').on("click", function() {
+        if(!($('#box-office.box-office').text().length > 1)) {
+            $('#collapse-description').hide();
+            $('#description').show();
+        }
+    });
+
+    if($('#searchImg.image').attr('src') === '')  {
+        alert('true');
+    }
+
+    $('#desc-cont').on("click", function(ev) {
         ev.stopPropagation();
     });
 });
@@ -58,23 +80,4 @@ function getTitleDesc(movieIMDBID) {
     });
 }
 
-$('#desc-cont').on("click", function(ev) {
-    ev.stopPropagation();
-});
 
-$('#description').on("click", function() {
-    //$('#description').animate({width: 'toggle'});
-    $('#description').hide();
-    $('#collapse-description').show();
-});
-
-$('#collapse-description').on("click", function() {
-    if(!($('#box-office.box-office').text().length > 1)) {
-        $('#collapse-description').hide();
-        $('#description').show();
-    }
-});
-
-if($('#searchImg.image').attr('src') === '')  {
-    alert('true');
-}

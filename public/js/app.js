@@ -2165,13 +2165,13 @@ module.exports = {
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 $(document).ready(function () {
-  var searchImage = $("#searchImg.image");
-  searchImage.on("click", function () {
+  var moviePoster = $("#searchImg.image");
+  moviePoster.on("click", function () {
     var images = $('.imageContainer');
 
     var _loop = function _loop(i) {
       images[i].onclick = function () {
-        var imdbID = images[i].querySelectorAll('p')[0].dataset.imdbid;
+        var imdbID = images[i].dataset.imdbid;
         getTitleDesc(imdbID);
       };
     };
@@ -2202,6 +2202,25 @@ $(document).ready(function () {
         window.location.href = "/viewPoster?movieTitle=" + movieTitle + "&movieYear=" + movieYear;
       }
     });
+    ev.stopPropagation();
+  });
+  $('#description').on("click", function () {
+    //$('#description').animate({width: 'toggle'});
+    $('#description').hide();
+    $('#collapse-description').show();
+  });
+  $('#collapse-description').on("click", function () {
+    if (!($('#box-office.box-office').text().length > 1)) {
+      $('#collapse-description').hide();
+      $('#description').show();
+    }
+  });
+
+  if ($('#searchImg.image').attr('src') === '') {
+    alert('true');
+  }
+
+  $('#desc-cont').on("click", function (ev) {
     ev.stopPropagation();
   });
 });
@@ -2238,25 +2257,6 @@ function getTitleDesc(movieIMDBID) {
       }
     }
   });
-}
-
-$('#desc-cont').on("click", function (ev) {
-  ev.stopPropagation();
-});
-$('#description').on("click", function () {
-  //$('#description').animate({width: 'toggle'});
-  $('#description').hide();
-  $('#collapse-description').show();
-});
-$('#collapse-description').on("click", function () {
-  if (!($('#box-office.box-office').text().length > 1)) {
-    $('#collapse-description').hide();
-    $('#description').show();
-  }
-});
-
-if ($('#searchImg.image').attr('src') === '') {
-  alert('true');
 }
 
 /***/ }),

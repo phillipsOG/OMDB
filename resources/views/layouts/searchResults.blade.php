@@ -13,19 +13,20 @@
     @show
     <div class="results-body">
         <h1 id="test">Movies</h1>
-        <ul>
-            <?php foreach ($searchResults as $movie): ?>
-            <li class="sub">
-                <div class="imageContainer">
-                    <p id="movieTitle" data-title="<?php echo $movie['Title'];?>"
+        <?php foreach($searchResults as $movie): ?>
+        <table class="trending-table">
+            <tr>
+                <td class="trending-table-td">
+                    <div class="imageContainer" data-title="<?php echo $movie['Title'];?>"
                          data-year="<?php echo $movie['Year'];?>"
-                         data-imdbID="<?php echo $movie['imdbID']?>">
-                    </p>
-                    <img class="image" id="searchImg" src="<?php echo $movie['Poster']?>"/>
-                </div>
-            </li>
-            <?php endforeach; ?>
-        </ul>
+                         data-imdbID="<?php echo $movie['imdbID']; ?>">
+                        <img class="image" id="searchImg" src="
+                        <?php echo $movie['Poster'];?>"/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <?php endforeach; ?>
     </div>
 </div>
 @endsection
