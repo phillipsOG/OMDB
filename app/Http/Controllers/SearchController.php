@@ -151,7 +151,6 @@ class SearchController extends BaseController
     {
         $movieList = [
             'Mask',
-            'Mean Girls',
             'Shrek',
             'Inception',
             'Lion King',
