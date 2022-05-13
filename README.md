@@ -1,7 +1,7 @@
 # Open Movie Database (OMDB)
 <p>OMDB was made for searching movie titles for those who would want a quick summary of a movie or an expanded view with more detail i.e. extended movie summary with box office data.</p>
 
-<h1>How do I use it?</h1>
+<h1>How Do I Use It?</h1>
 <p>At the top of the header nav bar is a site-wide search box used to get movie data.</p>
 <ol>
     <li>Simply type in the name of the movie you'd like information on</li>
