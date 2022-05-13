@@ -8,14 +8,13 @@
 @section('singlePosterView')
     <div class="main-body">
         <div class="results-body-single-view">
-            <p class="title" id="test"><?php echo "Your searched for: ". $movieData['title']?></p>
             <ul>
                 <li>
                     <div class="imageContainer">
                         <p id="movieTitle" data-title="<?php echo $movieData['title'];?>"
                            data-year="<?php echo $movieData['year'];?>">
                         </p>
-                        <img class="image" id="searchImg" src="<?php echo $movieData['posterUrl']; ?>" alt="movie poster"/>
+                        <img class="image posterImage singleView" src="<?php echo $movieData['posterUrl']; ?>" alt="movie poster"/>
                     </div>
                 </li>
             </ul>

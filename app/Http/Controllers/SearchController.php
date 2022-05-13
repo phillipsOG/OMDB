@@ -6,6 +6,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Routing\Controller as BaseController;
 use GuzzleHttp\Client;
 use Illuminate\View\View;
+use Monolog\Logger;
 
 class SearchController extends BaseController
 {
@@ -39,7 +40,7 @@ class SearchController extends BaseController
      */
     private function buildApiUrlDescFull(string $userSearchTerm, string $movieYear): string
     {
-        $movieYearUrl = "&y=".$movieYear;
+        $movieYearUrl = "&y=$movieYear";
         return $this->baseUrlDesc . $userSearchTerm . $movieYearUrl . $this->fullPlot . $this->apiKeyUrlPart;
     }
 
@@ -62,6 +63,7 @@ class SearchController extends BaseController
         $usrSearch = trim($usrSearch);
         $usrSearch = htmlentities($usrSearch);
         $finalUrl = $this->buildApiUrl($usrSearch);
+
         try {
             $res = $this->client->request('GET', $finalUrl, []);
             $resBody = $res->getBody()->getContents();
@@ -81,16 +83,10 @@ class SearchController extends BaseController
             }
             else
             {
-                $emptyResult['Search'][] = [
-                  'Title' => "",
-                  'Year' => "",
-                  'Poster' => "https://i.imgur.com/jHsym5q.png",
-                  'imdbID' => ""
-                ];
-                return view('layouts/searchResults', ['searchResults' => $emptyResult['Search']]);
+                return view('layouts/searchResults', ['searchResults' => []]);
             }
         } catch (GuzzleException $e) {
-            dd($e->getMessage());
+            return view('layouts/searchResults', ['searchResults' => []]);
         }
     }
 
@@ -100,14 +96,21 @@ class SearchController extends BaseController
     function movieSearchDesc(): array
     {
         $movieIMDBID = $_GET['i'];
+
+        if(empty($movieIMDBID)) {
+            return [];
+        }
+
         $finalUrl = $this->buildApiUrlImdbID($movieIMDBID);
+
         try {
-            $res = $this->client->request('GET', $finalUrl, []);
+            $res = $this->client->request('GET', $finalUrl);
             $resBody = $res->getBody()->getContents();
             $parsed = json_decode($resBody, true);
         } catch (GuzzleException $e) {
-            dd($e->getMessage());
+            return [];
         }
+
         return $parsed;
     }
 
@@ -118,9 +121,27 @@ class SearchController extends BaseController
     {
         $movieTitle = $_GET['movieTitle'];
         $movieYear = $_GET['movieYear'];
-        $finalUrl = $this->buildApiUrlDescFull($movieTitle , $movieYear);
+
+        if (empty($movieTitle) || empty($movieYear)) {
+            return view('pages/singlePosterView', ['movieData' => [
+                'title' => 'N/A',
+                'year' => 'N/A',
+                'posterUrl' => 'https://i.imgur.com/jHsym5q.png',
+                'genre' => 'N/A',
+                'rating' => 'N/A',
+                'released' => 'N/A',
+                'boxOffice' => 'N/A',
+                'boxOffice' => 'N/A',
+                'director' => 'N/A',
+                'summary' => 'N/A',
+                'actors' => 'N/A'
+            ]]);
+        }
+
+        $finalUrl = $this->buildApiUrlDescFull($movieTitle, $movieYear);
+
         try {
-            $res = $this->client->request('GET', $finalUrl, []);
+            $res = $this->client->request('GET', $finalUrl);
             $resBody = $res->getBody()->getContents();
             $parsed = json_decode($resBody, true);
 
@@ -140,12 +161,11 @@ class SearchController extends BaseController
         } catch (GuzzleException $e) {
             dd($e->getMessage());
         }
-        return view('pages/singlePosterView', ['movieDesc' => $parsed, 'movieData' => $movieData]);
+        return view('pages/singlePosterView', ['movieData' => $movieData]);
     }
 
     /**
      * @return array
-     * @throws GuzzleException
      */
     function getTrending(): array
     {
@@ -164,19 +184,22 @@ class SearchController extends BaseController
 
         foreach($movieList as $movieTitle)
         {
-            $apiUrl = $this->buildApiUrl($movieTitle);
-            $res = $this->client->request('GET', $apiUrl, []);
-            $body = $res->getBody()->getContents();
-            $parsed = json_decode($body, true);
-            foreach($parsed['Search'] as $movieResult)
-            {
-              if(isset($movieResult['Poster']) && !empty($movieResult['Poster']) && $movieResult['Poster'] != 'N/A')
-              {
-                  $validMovieList[] = $movieResult;
-              }
+            try {
+                $res = $this->client->request('GET', $this->buildApiUrl($movieTitle));
+                $body = $res->getBody()->getContents();
+                $parsed = json_decode($body, true);
+
+                foreach($parsed['Search'] as $movieResult)
+                {
+                    if(isset($movieResult['Poster']) && $movieResult['Poster'] != 'N/A')
+                    {
+                        $validMovieList[] = $movieResult;
+                    }
+                }
+            } catch (GuzzleException $e) {
+                return $validMovieList;
             }
         }
-
         return $validMovieList;
     }
 }

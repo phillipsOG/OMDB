@@ -2165,19 +2165,11 @@ module.exports = {
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 $(document).ready(function () {
-  var moviePoster = $("#searchImg.image");
-  moviePoster.on("click", function () {
-    var images = $('.imageContainer');
+  $(".posterImage").on("click", function () {
+    var imdbid = $(this).parent('.imageContainer').data('imdbid');
 
-    var _loop = function _loop(i) {
-      images[i].onclick = function () {
-        var imdbID = images[i].dataset.imdbid;
-        getTitleDesc(imdbID);
-      };
-    };
-
-    for (var i = 0; i < images.length; i++) {
-      _loop(i);
+    if (typeof imdbid !== 'undefined' && imdbid !== '') {
+      getTitleDesc(imdbid);
     }
 
     window.scrollTo({
@@ -2188,39 +2180,46 @@ $(document).ready(function () {
   $('#m-poster').on("click", function (ev) {
     var movieTitle = $('#m-title').text();
     var movieYear = $('#m-year').text();
-    $.ajax({
-      type: "GET",
-      url: "/viewPoster",
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      data: {
-        "movieTitle": movieTitle,
-        "movieYear": movieYear
-      },
-      success: function success() {
-        window.location.href = "/viewPoster?movieTitle=" + movieTitle + "&movieYear=" + movieYear;
-      }
-    });
+
+    if (movieTitle !== "Movie Title" && movieYear !== "Year") {
+      $.ajax({
+        type: "GET",
+        url: "/viewPoster",
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+          "movieTitle": movieTitle,
+          "movieYear": movieYear
+        },
+        success: function success() {
+          window.location.href = "/viewPoster?movieTitle=" + movieTitle + "&movieYear=" + movieYear;
+        }
+      });
+    }
+
     ev.stopPropagation();
   });
-  $('#description').on("click", function () {
-    //$('#description').animate({width: 'toggle'});
-    $('#description').hide();
-    $('#collapse-description').show();
+  $('#description').on("click", function (ev) {
+    $('#description').attr("user-select: none");
+    $('#description').animate({
+      width: 'toggle'
+    });
+    $('#collapse-description').animate({
+      width: 'toggle'
+    });
   });
   $('#collapse-description').on("click", function () {
     if (!($('#box-office.box-office').text().length > 1)) {
-      $('#collapse-description').hide();
-      $('#description').show();
+      $('#collapse-description').animate({
+        width: 'toggle'
+      });
+      $('#description').animate({
+        width: 'toggle'
+      });
     }
   });
-
-  if ($('#searchImg.image').attr('src') === '') {
-    alert('true');
-  }
-
-  $('#desc-cont').on("click", function (ev) {
+  $('#description-content').on("click", function (ev) {
     ev.stopPropagation();
   });
 });
@@ -2237,12 +2236,7 @@ function getTitleDesc(movieIMDBID) {
     },
     success: function success(response) {
       var movies = $('#description');
-
-      if (response['Poster'] !== "N/A") {
-        $('#m-poster').attr("src", response['Poster']);
-      } else {
-        $('#m-poster').attr("src", "https://i.imgur.com/jHsym5q.png");
-      }
+      $('#m-poster').attr("src", response['Poster'] !== "N/A" ? response['Poster'] : "https://i.imgur.com/jHsym5q.png");
 
       if (typeof movies !== "undefined") {
         $('#m-indent').attr('imdbid', response['imdbID']);

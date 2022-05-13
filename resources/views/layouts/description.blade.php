@@ -3,7 +3,7 @@
     <div class="collapse-description" id="collapse-description"></div>
     <div class="description" id="description">
         <img class="m-poster" id="m-poster" src="https://i.imgur.com/jHsym5q.png" alt="movie poster"/>
-        <div class="description-contents" id="desc-cont">
+        <div class="description-content" id="description-content">
             <p id="m-title">Movie Title</p>
             <p id="m-genre-data">Movie Genre</p>
             <table>

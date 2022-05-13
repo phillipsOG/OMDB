@@ -8,14 +8,11 @@
             @include('includes.header')
         @show
     </div>
-    <div class="sidebar">
-        @section('sidebar')
-            @include('layouts.sidebar')
-        @show
-    </div>
-    @yield('singlePosterViewNY')
+    @section('sidebar')
+        @include('layouts.sidebar')
+    @show
     @yield('singlePosterView')
     @yield('homepage')
-    @yield('poster')
+    @yield('searchResults')
 </body>
 </html>

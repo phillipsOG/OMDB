@@ -14,26 +14,33 @@ h3 {
     font-size: 12px;
 }
 
+ul {
+    padding: 0px;
+    display: inline;
+}
+
+li {
+    list-style: none;
+    display: inline;
+}
+
+
+li .imageContainer .posterImage {
+    width: 395px;
+    height: auto;
+    margin-top: 25px;
+    margin-left: 25px;
+}
+
 .results-body {
     overflow: hidden;
+
 }
 
 .results-body h1 {
     color: white;
     font-weight: 600;
-    margin-left: 30px;
-}
-
-.home-body h1 {
-    color: white;
-    font-weight: 600;
-    margin-left: 145px;
-}
-
-.home-body p {
-    color: white;
-    font-weight: 400;
-    margin-left: 145px;
+    margin-left: 32px;
 }
 
 .title {
@@ -46,24 +53,48 @@ h3 {
     overflow: hidden;
 }
 
-.results-body-single-view #searchImg {
+.results-body-single-view .posterImage {
     width: 360px;
     height: auto;
 }
 
-ul {
-    padding: 0px;
-    display: inline;
+.header .search-container {
+    float: left;
+    padding-left: 30px;
 }
 
-li {
-    list-style: none;
-    display: inline;
-    vertical-align: top;
-    margin-left: 20px;
+.form {
+    display: flex;
+    margin: 8px 0px;
 }
 
-.trending-table #searchImg {
+.search-field {
+    width: 100%;
+    padding: 10px 35px 10px 15px;
+    border: none;
+    border-radius: 100px;
+    outline: none;
+    cursor: pointer;
+    max-width: 380px;
+    min-width: 380px;
+}
+
+.search-button {
+    background: transparent;
+    border: none;
+    outline: none;
+    margin: 8px 0px 0px 5px;
+    position: absolute;
+}
+
+.search-button img {
+    width: 20px;
+    height: 20px;
+    -o-object-fit: cover;
+       object-fit: cover;
+}
+
+.trending-table .posterImage {
     opacity: 1;
     width: 175px;
     height: auto;
@@ -97,6 +128,21 @@ li {
     margin: 0px;
     display: inline;
     vertical-align: top;
+}
+
+.box-office {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 25px;
+    margin-left: 145px;
+    color: white;
+    font-size: 16px;
+    text-align: left;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-weight: 100;
+    width: 30%;
+    border-left: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .box-office table {
@@ -181,23 +227,10 @@ li {
     height: auto;
 }
 
-.box-office {
-    display: inline-block;
-    color: white;
-    font-size: 16px;
-    text-align: left;
-    margin-top: 3px;
-    margin-left: 75px;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-weight: 100;
-    width: 30%;
-    border-left: 1px solid rgba(255, 255, 255, 0.6);
-}
-
 .description .m-poster:hover {
     opacity: 0.5;
     border: 1px solid rgba(167, 66, 235, 0.7);
+    cursor: pointer;
 }
 
 .description .m-poster {
@@ -208,12 +241,14 @@ li {
     -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
     border: 1px outset transparent;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 
 .imageContainer .image {
     opacity: 1;
-    width: 25%;
-    height: auto;
     transition: .5s ease;
     -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
@@ -265,22 +300,29 @@ p {
     overflow: hidden;
 }
 
+image .posterImage .singleView:hover  {
+    opacity: 1;
+}
+
 .description > p {
     color: rgba(255, 255, 255, 0.7);
 }
 
-.imageContainer:hover .image {
+.trending-table .posterImage:hover {
     opacity: 0.3;
+    cursor: pointer;
 }
 
-.imageContainer:hover #searchImg {
+.m-poster:hover .image {
     opacity: 0.3;
     transition: .5s ease;
+    cursor: pointer;
 }
 
 .sidebar {
     background-color: #1a212b;
     float: left;
+    margin: 5px 0px;
 }
 
 .sidebar a {
@@ -288,10 +330,11 @@ p {
     color: #767a7f;
     text-align: left;
     margin-bottom: 5px;
-    padding: 14px 16px;
+    padding: 20px 5px;
     text-decoration: none;
     font-size: 17px;
     font-weight: 600;
+    margin-left: 30px;
 }
 
 .sidebar a:hover {
@@ -314,8 +357,7 @@ p {
     display: block;
     color: #767a7f;
     text-align: center;
-    padding: 14px 16px;
-    margin-left: 5px;
+    padding: 15px 29px;
     text-decoration: none;
     font-size: 20px;
     font-weight: 600;
@@ -329,30 +371,11 @@ p {
     color: white;
 }
 
-.header .search-container {
-    float: left;
-    padding-left: 30px;
-    display: inline-block;
-    max-width: 380px;
-    min-width: 380px;
-}
-
 .header input[type=text] {
     font-size: 17px;
-    border-radius: 25px;
     border: none;
-    padding: 6px 10px;
-    float: left;
-}
-
-.header .search-container input {
-    background: #ddd;
-    font-size: 17px;
-    border: none;
-    cursor: pointer;
-    padding: 8px 8px;
-    width: 100%;
-    margin: 8px 80px 0px 0px;
+    padding-left: 35px;
+    text-align: left;
 }
 
 .header input:hover {
