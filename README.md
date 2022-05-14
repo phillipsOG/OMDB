@@ -4,7 +4,7 @@
 <h1>How do I use it?</h1>
 <p>At the top of the header nav bar is a site-wide search box used to get movie data.</p>
 <ol>
-    <li>Simply type in the name of the movie you'd like information on:</li>
+    <li>Simply type in the name of the movie you'd like information on</li>
     <br>
         <ul><image src="https://i.imgur.com/KkMmV6H.png"></image></ul>
     <br>
@@ -27,17 +27,28 @@
 <p>Register a free account with a valid email at https://www.omdbapi.com/ to receive your API key.</p>
 <h3>Configuring Env</h3>
 
-Inside the .env file you will see this string at the bottom of the file: OMDB_API_KEY="" 
-  - Set your API key within the quotations
+Navigate to the root folder of the application and rename the file '.env.example' to '.env' 
+  - add this line to the bottom of the .env file
+  - OMDB_API_KEY=""
+  - Insert your API key in-between the quotations
 
-Now you can query the API for movies.
+You can now query the API for movies.
 
 <h1>Setting Up Docker /w Image</h1>
-<p>Docker is required to run this code.</p>
+Run:
 <ol>
-    <li>Install Docker</li>
-    <li></li>
+    <li>npm install</li>
+    <li>composer install</li>
+<br>
+or for Windows / Mac users,
+<li>Composer install --ignore-platform-req=ext-fileinfo --ignore-platform-req=ext-fileinfo</li>
+<br>
+<li>php artisan key:generate</li>
+
+<li>docker-compose up</li>
 </ol>
+
+You should now be able to navigate to the website by connecting through localhost. 
 
 <h3>Authors Note</h3>
 <p>Developed on a monitor with a resolution of <b>2560x1440</b></p>
