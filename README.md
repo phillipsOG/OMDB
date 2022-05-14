@@ -31,6 +31,7 @@
 <li>add this line to the bottom of the .env file</li>
 <li>OMDB_API_KEY=""</li>
 <li>insert your API key in-between the quotations</li>
+<br>
 <p>You can now query the API for movies.</p>
 
 <h1>Setting Up Docker /w Image</h1>
